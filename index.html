@@ -1,0 +1,47 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MapLogger – Builder</title><link rel="icon" type="image/png" href="logo.png"/><link rel="stylesheet" href="style.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script></head>
+<body><header class="header"><div class="title-line"><img class="logo" src="logo.png" alt="MapLogger logo" loading="lazy"/><h1>MapLogger <span class="badge">Builder</span></h1></div>
+<p class="subtitle">Instrument your interactive map for usability experiments. Works fully client-side.</p></header>
+<div id="env-warning" class="warn hidden" role="alert"></div>
+<main class="container">
+<section class="panel"><h2>1) Upload your map source files <span class="req">required</span></h2>
+<p class="help">Create a ZIP archive containing your interactive map (HTML pages, JavaScript, CSS, images, data files, fonts). Upload that single ZIP here; the builder keeps the internal folder structure intact and instruments all HTML files. Remote resources (e.g., map tiles over HTTPS) can stay external. The generated host page (`index.html` or `ml-host.html`) is saved alongside your original `index.html`, so you will find the instrumented version in the same folder.</p>
+<div id="dropzone" class="dropzone" tabindex="0"><p>Drag & drop your ZIP here, or</p>
+<label class="button"><input id="file-input" type="file" accept=".zip" style="display:none"/>Choose ZIP</label></div>
+<div class="list-head"><div class="left"><strong>Files (<span id="file-count">0</span>)</strong> · <span id="file-total-size">0 B</span></div><div class="right"><button id="clear-files" type="button" class="tiny-btn" aria-label="Clear uploaded ZIP" title="Remove ZIP">Clear ZIP</button></div></div><div id="file-list" class="file-list"></div></section>
+<section class="panel"><h2>2) Define tasks <span class="req">required</span></h2>
+<p class="help">Create one short, action‑oriented task per bubble (e.g., “Find the nearest pharmacy in Olomouc”). Tasks appear to participants in order and are recorded in the log. Keep wording specific and self‑contained. The task toolbar is shown in the Host page at the very top; your uploaded pages run as Child pages inside an iframe.</p>
+<div id="tasks-list" class="tasks-list" aria-label="Tasks"></div>
+<div class="tasks-actions"><div class="left"><span class="tasks-count">Tasks: <strong id="tasks-count">0</strong></span></div><div class="right"><button id="add-task" type="button" class="tiny-btn" aria-label="Add task">+ Add task</button></div></div>
+<label class="block">Welcome message (shown once on the entry page):
+	<textarea id="welcomeMessage" class="welcome-input" placeholder="Welcome to the experiment. Please read the instructions below and then choose a page to begin."></textarea>
+</label>
+<p class="help">This message replaces the immediate “Task 1” on the entry page and is only shown once. After participants click any page link, Task 1 appears and the study begins.</p>
+<div class="preview-wrap">
+	<div class="preview-head">Mini preview</div>
+	<div class="toolbar-preview" aria-hidden="true">
+		<div class="tp-left"><strong id="task-preview-label">Task 1</strong></div>
+		<div class="tp-right"><button class="tp-btn" disabled>Next →</button><button class="tp-btn danger" disabled>END</button></div>
+	</div>
+		<div id="workflow" class="workflow" aria-label="Task flow"></div>
+		<p class="help">The preview shows how the first task label will look in the Host toolbar. Actual appearance depends on the MapLogger client CSS.</p>
+		</div>
+	<div class="row wrap gap">
+		<label class="inline chk"><input id="autoEntryIndex" type="checkbox" checked/> Create experimental index.html if missing</label>
+	</div>
+<p class="help">The Host handles the fixed toolbar and automatically offsets the iframe content below it. The internal session key is derived from the Output name. You manage only the tasks and (optionally) a Welcome message.</p>
+</section>
+<section class="panel"><h2>3) Build</h2>
+<div class="row wrap gap">
+	<label class="inline">Output name <span class="req">required</span>: <input id="outputName" class="text-input" style="width:100%;max-width:520px" type="text" value="MapLogger-instrumented" placeholder="e.g., study_pilot_q4"/></label>
+</div>
+<p class="help">Click to generate and download a ZIP named after your output name. The CSV inside will also use that base name. The Host page automatically places the toolbar and offsets the iframe content.</p><button id="build" class="primary build-cta" aria-label="Build instrumented ZIP">BUILD</button>
+<p class="build-note">After clicking, a ZIP file will be generated and downloaded. This can take a moment — please click only once.</p>
+<div id="build-log" class="log" aria-live="polite"></div></section></main>
+<footer class="footer"><p>MIT licence. Developed by Tomáš Vaníček (Palacký University Olomouc). Fully client‑side; no server required.</p></footer>
+<script src="app.js"></script></body></html>
